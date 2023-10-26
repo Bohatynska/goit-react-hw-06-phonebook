@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { nanoid } from 'nanoid';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
 import {
   FormWrap,
   Form,
@@ -8,55 +10,34 @@ import {
   FormButton,
 } from 'Components/PhonebookForm/PhonebookForm.styled';
 
-function PhonebookForm({ onSubmit }) {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+function PhonebookForm() {
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
-  const handleInputChange = event => {
-    const { name, value } = event.currentTarget;
-    if (name === 'name') {
-      setName(value);
+  const handleSubmit = e => {
+    e.preventDefault();
+    const form = e.target;
+    const { name, number } = form.elements;
+
+    for (const contact of contacts) {
+      if (contact.name.toLowerCase() === name.value.toLowerCase()) {
+        return alert(`${name.value} is already a contact`);
+      }
     }
-    if (name === 'number') {
-      setNumber(value);
-    }
+    dispatch(addContact(name.value, number.value));
+    form.reset();
   };
-
-  const handleSubmit = event => {
-    event.preventDefault();
-
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
-    };
-    onSubmit(contact);
-    reset();
-  };
-
-  const reset = () => {
-    setName('');
-    setNumber('');
-  };
-
   return (
     <FormWrap>
-      <h1>PHONEBOOK</h1>
       <Form onSubmit={handleSubmit}>
-        <FormLabel htmlFor="name">Name</FormLabel>
-        <FormInput
-          onChange={handleInputChange}
-          value={name}
-          type="text"
-          name="name"
-        ></FormInput>
-        <FormLabel htmlFor="number">Number</FormLabel>
-        <FormInput
-          onChange={handleInputChange}
-          value={number}
-          type="tel"
-          name="number"
-        ></FormInput>
+        <FormLabel>
+          Name
+          <FormInput type="text" name="name" />
+        </FormLabel>
+        <FormLabel>
+          Phone number
+          <FormInput type="tel" name="number" />
+        </FormLabel>
         <FormButton type="submit">Add contact</FormButton>
       </Form>
     </FormWrap>

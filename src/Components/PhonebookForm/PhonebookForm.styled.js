@@ -1,4 +1,4 @@
-const { default: styled } = require('@emotion/styled');
+import styled from 'styled-components';
 
 export const FormWrap = styled.div`
   border: 2px solid black;

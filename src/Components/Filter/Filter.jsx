@@ -1,14 +1,28 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { getFilteredContacts } from 'redux/fiterSlice';
+import { getFilter } from 'redux/selectors';
 import { FilterWrap, FilterLabel, FilterInput } from './Filter.styled';
-const Filter = ({ onChange, value }) => {
+const Filter = () => {
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
+
+  const onFilter = event => {
+    const value = event.target.value.trim();
+
+    dispatch(getFilteredContacts(value));
+  };
+
   return (
     <FilterWrap>
-      <FilterLabel htmlFor="name">Find contact by number</FilterLabel>
-      <FilterInput
-        onChange={onChange}
-        name="filter"
-        type="filter"
-        value={value}
-      ></FilterInput>
+      <FilterLabel>
+        Find contacts by name
+        <FilterInput
+          type="text"
+          name="filter"
+          onChange={onFilter}
+          value={filter}
+        />
+      </FilterLabel>
     </FilterWrap>
   );
 };
