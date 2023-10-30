@@ -1,9 +1,14 @@
 import styled from 'styled-components';
 
 export const FormWrap = styled.div`
-  border: 2px solid black;
   padding: 30px;
   background-color: white;
+  border: 2px solid grey;
+  &:hover,
+  &:focus {
+    border-color: #d8bfd8;
+  }
+  border-radius: 4px;
 `;
 export const Form = styled.form`
   display: flex;
@@ -22,7 +27,7 @@ export const FormInput = styled.input`
   border: 2px solid grey;
   &:hover,
   &:focus {
-    border-color: green;
+    border-color: #d8bfd8;
   }
 `;
 export const FormButton = styled.button`
